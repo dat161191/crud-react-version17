@@ -1,5 +1,7 @@
-import axios from "axios";
+import  {instance}  from "./CustomizeAxios.js";
+// import axios from "axios";
 const getListUserService = () => {
-    return axios.get('https://reqres.in/api/users?page=2')
-}
+    return instance.get('users?page=2')
+};
+
 export { getListUserService };

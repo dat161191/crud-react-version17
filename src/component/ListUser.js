@@ -7,7 +7,7 @@ export const ListUser = (props) => {
     useEffect(() => { getListUser() }, []);
     const getListUser = async () => {
         let result = await getListUserService();
-        setUsers(result && result.data && result.data.data ? result.data.data : [])
+        setUsers(result && result.data  ? result.data : [])
     }
     // console.log('users => ', users);
 
