@@ -1,0 +1,11 @@
+body {
+  div {
+    font-size: calc(10px + 2vmin);
+    color: red;
+    font-family: 'Palatino Linotype', serif;
+  }
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
