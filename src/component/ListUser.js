@@ -8,6 +8,8 @@ import lodash from 'lodash';
 import { debounce } from 'lodash';
 import DeleteUser from './DeleteUserModal';
 import { toast } from 'react-toastify';
+import { CSVLink, CSVDownload } from "react-csv";
+import Papa from 'papaparse'
 
 export const ListUser = (props) => {
     const [users, setUsers] = useState([]);
@@ -29,6 +31,7 @@ export const ListUser = (props) => {
 
     const [keySearch, setKeySearch] = useState('');
 
+    const [dataDownload, setDataDownload] = useState([]);
     const handleClose = () => {
         setIsShowModalEdit(false);
         setIsShowModalDelete(false);
@@ -109,14 +112,92 @@ export const ListUser = (props) => {
             }
             setUsers(cloneUsers);
         } else { getListUser(1); }
-    }, 500)
+    }, 500);
+
+    const getUsersDowmload = (event, done) => {
+        let result = [];
+        if (users && users.length > 0) {
+            result.push(["Id", 'First Name', 'LastName', 'Email', 'Avatar']);
+            users.map((ele, index) => {
+                let arr = [];
+                arr[0] = ele.id;
+                arr[1] = ele.first_name;
+                arr[2] = ele.last_name;
+                arr[3] = ele.email;
+                arr[4] = ele.avatar;
+                result.push(arr);
+            })
+            setDataDownload(result);
+            done();
+        }
+    };
+
+    const handleUploadCsv = (event) => {
+        if (event.target && event.target.value && event.target.files[0]) {
+            let file = event.target.files[0];
+            if (file.type !== 'text/csv') {
+                toast.info('Error: File not format  .csv...');
+                return;
+            }
+            // console.log('check fileImport: ', file)
+            Papa.parse(file, {
+                // header: true,
+                complete: function (results) {
+                    let resultCsv = results.data;
+                    if (resultCsv.length > 0) {
+                        if (resultCsv[0] && resultCsv[0].length === 4) {
+                            if (resultCsv[0][0] !== 'first_name' || resultCsv[0][1] !== 'last_name'
+                                || resultCsv[0][2] !== 'email' || resultCsv[0][3] !== 'avatar') {
+                                toast.info('Erros: Wrong format Header your file');
+                            } else {
+                                console.log("Finished:", results.data);
+                                let dataUpload = [];
+                                resultCsv.map((ele, index) => {
+                                    if (index > 0 && ele.length === 4) {
+                                        let obj = [];
+                                        obj.first_name = ele[0];
+                                        obj.last_name = ele[1];
+                                        obj.email = ele[2];
+                                        obj.avatar = ele[3];
+                                        dataUpload.push(obj);
+                                    }
+                                });
+                                setUsers(dataUpload);
+                                console.log("Finished:", dataUpload);
+
+                            }
+                        } else {
+                            toast.info('Erros: Wrong format quantity colum your file');
+                        }
+                    } else {
+                        toast.info('Error:Not found file csv')
+                    }
+                }
+            })
+        }
+    }
+
     return (
         <>
             <CreateUser handleUpdateListUserByCreate={handleUpdateListUserByCreate} />
-            <div className='col-6 my-2'>
-                <input type='text' className='form-control' placeholder='Search by Email'
-                    // value={keySearch} 
-                    onChange={(event) => handleSearch(event)} />
+            <div className='row'>
+                <div className='col-6 my-2'>
+                    <input type='text' className='form-control' placeholder='Search by Email'
+                        // value={keySearch} 
+                        onChange={(event) => handleSearch(event)} />
+                </div>
+                <div className='col-6 my-2'>
+                    <label htmlFor='import' className="btn btn-primary me-2"><i className="fa-solid fa-file-import"></i> UpLoad file.csv</label>
+                    <input type='file' id='import' hidden onChange={(event) => handleUploadCsv(event)} />
+                    <CSVLink
+                        // data={users} Truyền thẳng list chưa config tên cột
+                        data={dataDownload} // Truyền listUser đã config
+                        asyncOnClick={true}
+                        onClick={getUsersDowmload}
+                        filename={"list-user.csv"}
+                        className="btn btn-primary"
+                    ><i className="bi bi-file-earmark-arrow-down-fill"></i> Download file .csv</CSVLink>
+                </div>
             </div>
             <Table striped bordered hover variant="dark">
                 <thead>
