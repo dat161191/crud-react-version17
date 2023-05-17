@@ -9,8 +9,9 @@ import { debounce } from 'lodash';
 import DeleteUser from './DeleteUserModal';
 import { toast } from 'react-toastify';
 import { CSVLink, CSVDownload } from "react-csv";
-import Papa from 'papaparse'
-
+import Papa from 'papaparse';
+import axios from "axios";
+import { Container } from 'react-bootstrap';
 export const ListUser = (props) => {
     const [users, setUsers] = useState([]);
     const [paginate, setPage] = useState({
@@ -37,10 +38,13 @@ export const ListUser = (props) => {
         setIsShowModalDelete(false);
     };
     useEffect(() => {
-        getListUser()
+         getListUser();
     }, []);
+    // Call API BE project shopclock
+    
     const getListUser = async (page) => {
         let result = await getListUserService(page);
+        console.log('getListUser: ',result)
         setUsers(result && result.data ? result.data : []);
         setPage(
             prePage => {
@@ -53,7 +57,6 @@ export const ListUser = (props) => {
                 }
             }
         );
-        // console.log('result: ', result);
     }
 
     const handleSort = (sortBy, sortField) => {
@@ -179,107 +182,109 @@ export const ListUser = (props) => {
 
     return (
         <>
-            <CreateUser handleUpdateListUserByCreate={handleUpdateListUserByCreate} />
-            <div className='row'>
-                <div className='col-6 my-2'>
-                    <input type='text' className='form-control' placeholder='Search by Email'
-                        // value={keySearch} 
-                        onChange={(event) => handleSearch(event)} />
+            <Container>
+                <CreateUser handleUpdateListUserByCreate={handleUpdateListUserByCreate} />
+                <div className='row'>
+                    <div className='col-6 my-2'>
+                        <input type='text' className='form-control' placeholder='Search by Email'
+                            // value={keySearch} 
+                            onChange={(event) => handleSearch(event)} />
+                    </div>
+                    <div className='col-6 my-2'>
+                        <label htmlFor='import' className="btn btn-primary me-2"><i className="fa-solid fa-file-import"></i> UpLoad file.csv</label>
+                        <input type='file' id='import' hidden onChange={(event) => handleUploadCsv(event)} />
+                        <CSVLink
+                            // data={users} Truyền thẳng list chưa config tên cột
+                            data={dataDownload} // Truyền listUser đã config
+                            asyncOnClick={true}
+                            onClick={getUsersDowmload}
+                            filename={"list-user.csv"}
+                            className="btn btn-primary"
+                        ><i className="bi bi-file-earmark-arrow-down-fill"></i> Download file .csv</CSVLink>
+                    </div>
                 </div>
-                <div className='col-6 my-2'>
-                    <label htmlFor='import' className="btn btn-primary me-2"><i className="fa-solid fa-file-import"></i> UpLoad file.csv</label>
-                    <input type='file' id='import' hidden onChange={(event) => handleUploadCsv(event)} />
-                    <CSVLink
-                        // data={users} Truyền thẳng list chưa config tên cột
-                        data={dataDownload} // Truyền listUser đã config
-                        asyncOnClick={true}
-                        onClick={getUsersDowmload}
-                        filename={"list-user.csv"}
-                        className="btn btn-primary"
-                    ><i className="bi bi-file-earmark-arrow-down-fill"></i> Download file .csv</CSVLink>
-                </div>
-            </div>
-            <Table striped bordered hover variant="dark">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>
-                            ID &nbsp;&nbsp;&nbsp;
-                            <i className="bi bi-sort-alpha-down" style={{ cursor: 'pointer' }}
-                                onClick={() => { handleSort('desc', 'id') }}></i>
-                            <i className="bi bi-sort-alpha-up-alt" style={{ cursor: 'pointer' }}
-                                onClick={() => { handleSort('asc', 'id') }}></i>
-                        </th>
-                        <th className='d-flex justify-content-between'>
-                            <span>First Name</span>
-                            <span>
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>
+                                ID &nbsp;&nbsp;&nbsp;
                                 <i className="bi bi-sort-alpha-down" style={{ cursor: 'pointer' }}
-                                    onClick={() => { handleSort('desc', 'first_name') }}></i>
-                                &nbsp;&nbsp;&nbsp;
+                                    onClick={() => { handleSort('desc', 'id') }}></i>
                                 <i className="bi bi-sort-alpha-up-alt" style={{ cursor: 'pointer' }}
-                                    onClick={() => { handleSort('asc', 'first_name') }}></i>
-                            </span>
-                        </th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Avatar</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {users && users.length > 0 &&
-                        users.map((ele, index) => {
-                            return (
-                                <tr key={ele.id}>
-                                    <td>{(paginate.currentPage - 1) * paginate.perPage + index + 1}</td>
-                                    <td>{ele.id}</td>
-                                    <td>{ele.first_name}</td>
-                                    <td>{ele.last_name}</td>
-                                    <td>{ele.email}</td>
-                                    <td>
-                                        <img src={ele.avatar} alt='' style={{ marginLeft: '25%' }} />
-                                    </td>
-                                    <td >
-                                        <button className='btn btn-success me-1' onClick={() => handleEditUser(ele)}>Edit</button>
-                                        <>
-                                            <EditUser show={isShowModalEdit}
-                                                handleClose={handleClose}
-                                                dataEdit={dataEdit}
-                                                handleUpdateListUserByEdit={handleUpdateListUserByEdit} />
-                                        </>
-                                        <button className='btn btn-danger' onClick={() => handleDeleteUser(ele)}>Delete</button>
-                                        <>
-                                            <DeleteUser show={isShowModalDelete}
-                                                handleClose={handleClose}
-                                                dataDelete={dataDelete}
-                                                handleUpdateListUserByDelete={handleUpdateListUserByDelete}
-                                            />
-                                        </>
-                                    </td>
-                                </tr>
-                            )
-                        })}
-                </tbody>
-            </Table>
-            <ReactPaginate
-                breakLabel="..."
-                nextLabel="next >"
-                onPageChange={handlePageClick}
-                pageRangeDisplayed={5}
-                pageCount={paginate.totalPage}
-                previousLabel="< previous"
-                pageClassName="page-item"
-                pageLinkClassName="page-link"
-                previousClassName="page-item"
-                previousLinkClassName="page-link"
-                nextClassName="page-item"
-                nextLinkClassName="page-link"
-                breakClassName="page-item"
-                breakLinkClassName="page-link"
-                containerClassName="pagination"
-                activeClassName="active"
-                renderOnZeroPageCount={null}
-            />
+                                    onClick={() => { handleSort('asc', 'id') }}></i>
+                            </th>
+                            <th className='d-flex justify-content-between'>
+                                <span>First Name</span>
+                                <span>
+                                    <i className="bi bi-sort-alpha-down" style={{ cursor: 'pointer' }}
+                                        onClick={() => { handleSort('desc', 'first_name') }}></i>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <i className="bi bi-sort-alpha-up-alt" style={{ cursor: 'pointer' }}
+                                        onClick={() => { handleSort('asc', 'first_name') }}></i>
+                                </span>
+                            </th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            <th>Avatar</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users && users.length > 0 &&
+                            users.map((ele, index) => {
+                                return (
+                                    <tr key={ele.id}>
+                                        <td>{(paginate.currentPage - 1) * paginate.perPage + index + 1}</td>
+                                        <td>{ele.id}</td>
+                                        <td>{ele.first_name}</td>
+                                        <td>{ele.last_name}</td>
+                                        <td>{ele.email}</td>
+                                        <td>
+                                            <img src={ele.avatar} alt='' style={{ marginLeft: '25%' }} />
+                                        </td>
+                                        <td >
+                                            <button className='btn btn-success me-1' onClick={() => handleEditUser(ele)}>Edit</button>
+                                            <>
+                                                <EditUser show={isShowModalEdit}
+                                                    handleClose={handleClose}
+                                                    dataEdit={dataEdit}
+                                                    handleUpdateListUserByEdit={handleUpdateListUserByEdit} />
+                                            </>
+                                            <button className='btn btn-danger' onClick={() => handleDeleteUser(ele)}>Delete</button>
+                                            <>
+                                                <DeleteUser show={isShowModalDelete}
+                                                    handleClose={handleClose}
+                                                    dataDelete={dataDelete}
+                                                    handleUpdateListUserByDelete={handleUpdateListUserByDelete}
+                                                />
+                                            </>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                    </tbody>
+                </Table>
+                <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={paginate.totalPage}
+                    previousLabel="< previous"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                />
+            </Container>
         </>
     )
 }
