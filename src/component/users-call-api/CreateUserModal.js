@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createUser } from "../service/UserService";
+import { createUser } from "../../service/UserService";
 import { toast } from 'react-toastify';
 
 const CreateUser = (props) => {

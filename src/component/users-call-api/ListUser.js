@@ -1,5 +1,5 @@
 import Table from 'react-bootstrap/Table';
-import { getListUserService } from '../service/UserService';
+import { getListUserService } from '../../service/UserService';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import CreateUser from './CreateUserModal';
@@ -10,8 +10,8 @@ import DeleteUser from './DeleteUserModal';
 import { toast } from 'react-toastify';
 import { CSVLink, CSVDownload } from "react-csv";
 import Papa from 'papaparse';
-import axios from "axios";
 import { Container } from 'react-bootstrap';
+
 export const ListUser = (props) => {
     const [users, setUsers] = useState([]);
     const [paginate, setPage] = useState({

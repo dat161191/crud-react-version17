@@ -1,6 +1,6 @@
 import { Modal, Button } from "react-bootstrap";
 import { toast } from 'react-toastify';
-import { deleteUser } from "../service/UserService";
+import { deleteUser } from "../../service/UserService";
 const DeleteUser = (props) => {
     const { show, handleClose, dataDelete, handleUpdateListUserByDelete } = props;
     const handleDeleteUser = async () => {

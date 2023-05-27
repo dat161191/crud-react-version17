@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { toast } from 'react-toastify';
-import { updateUser } from "../service/UserService";
+import { updateUser } from "../../service/UserService";
 const EditUser = (props) => {
     const { show, handleClose, dataEdit, handleUpdateListUserByEdit } = props;
     const [user, setUser] = useState({

@@ -9,3 +9,67 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
 }
+
+.app-container {
+
+  // Trang login
+  .login {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    color: white;
+
+    .title {
+      text-align: center;
+      font-size: 50px;
+      font-weight: 600px;
+      padding-top: 20%;
+    }
+
+    .filed {
+      font-weight: 800px;
+      padding-bottom: 5px;
+    }
+
+    input {
+      border-radius: 8px;
+      width: 100%;
+      cursor: pointer;
+      border: none;
+      height: 35px;
+      // & :focus {
+      //   border:1px solid red;
+      // }
+    }
+
+    .bi.bi-eye-slash {
+      top: 8px;
+      right: 10px;
+      color: black;
+    }
+
+    .bi.bi-eye {
+      top: 8px;
+      right: 10px;
+      color: black;
+    }
+
+    button {
+      outline: none;
+      border: none;
+      width: 50%;
+      border-radius: 5px;
+      color: white;
+      font-size: 20px;
+    }
+
+    button[disabled=disable],
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    .active {
+      background-color: rgb(81, 84, 228);
+    }
+  }
+}
