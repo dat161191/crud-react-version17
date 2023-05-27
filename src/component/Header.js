@@ -2,17 +2,27 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { NavLink } from "react-router-dom";
-import logoApp from "../assets/img/logo192.png"
+import { NavLink, useNavigate } from "react-router-dom";
+import logoApp from "../assets/img/logo192.png";
+import { toast } from 'react-toastify';
+
 
 export const Header = (props) => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+        toast.success("Logout success!");
+    }
     return (
         <>
             <Navbar bg="light" expand="lg">
                 <Container>
-                    <Navbar.Brand href="/">
-                        <img src={logoApp} width="30px" height="30px" alt='logo' />
-                        <span> Test fresher reactjs</span>
+                    <Navbar.Brand>
+                        <NavLink style={{ textDecoration: 'none' }} exact="true" to="/" activeclassname="active">
+                            <img src={logoApp} width="30px" height="30px" alt='logo' />
+                            <span> Test fresher reactjs</span>
+                        </NavLink>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -29,16 +39,12 @@ export const Header = (props) => {
                         </Nav>
 
                         <Nav>
-                            <NavDropdown title="Login/Logout" id="basic-nav-dropdown">
+                            <NavDropdown title="Setting" id="basic-nav-dropdown">
                                 <NavDropdown.Item >
-                                    <Nav.Link  >
-                                        <NavLink style={{ textDecoration: 'none' }} exact="true" to="/login" activeclassname="active">Login</NavLink>
-                                    </Nav.Link>
+                                    <NavLink style={{ textDecoration: 'none' }} exact="true" to="/login" activeclassname="active">Login</NavLink>
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="/logut">
-                                    <Nav.Link  >
-                                        <NavLink style={{ textDecoration: 'none' }} exact="true" to="/logout" activeclassname="active">Logout</NavLink>
-                                    </Nav.Link>
+                                <NavDropdown.Item onClick={() => handleLogout()}>
+                                <NavLink style={{ textDecoration: 'none' }} exact="true"activeclassname="active">Logout</NavLink>
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>

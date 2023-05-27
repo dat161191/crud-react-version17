@@ -14,4 +14,7 @@ const updateUser = (user) => {
 const deleteUser = (id) => {
     return instance.delete(`/users/${id}`);
 };
-export { getListUserService, createUser, updateUser, deleteUser };
+const loginUser = (email,password) => {
+    return instance.post("/login", { email, password });
+};
+export { getListUserService, createUser, updateUser, deleteUser, loginUser };
