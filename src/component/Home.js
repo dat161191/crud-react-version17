@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Container from 'react-bootstrap/Container';
-
+import { toast } from 'react-toastify';
 
 const Home = () => {
+    useEffect(() => {
+        if (!localStorage.getItem("token")) {
+            const timeDelay = setTimeout(() => {
+                toast.info("Please login to access CRUD pages!!!");
+            }, 1500);
+            return () => {
+                clearTimeout(timeDelay);
+            }
+        }
+    },)
     return (
         <Container>
             <h3 className="text-danger text-center">Đề tài ứng tuyển Fresher React</h3>

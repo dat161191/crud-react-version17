@@ -7,10 +7,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListClock from './component/clock-conect-be/ListClock';
 import Home from './component/Home';
 import Login from './component/login-logout/Login';
-import Logout from './component/login-logout/Logout';
-
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
 
 function App() {
+  const { user } = useContext(UserContext);
+  console.log("check usecontext: ", user," check token:");
   return (
     <BrowserRouter>
       <>
@@ -21,9 +23,6 @@ function App() {
             <Route path="/users" element={<ListUser />} />
             <Route path="/clocks" element={<ListClock />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/logout" element={<Logout />} />
-
-
           </Routes>
         </div>
         <ToastContainer

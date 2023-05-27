@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { loginUser } from "../../service/UserService";
 import { toast } from 'react-toastify';
 import { NavLink, useNavigate } from "react-router-dom";
+import { useContext } from 'react';
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
+    const { loginContext } = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isShowPass, setIsShowPass] = useState(false);
@@ -37,7 +40,7 @@ const Login = () => {
         // }
         // console.log("check login=>", result);
         if (result && result.token) {
-            localStorage.setItem("token", result.token);
+            loginContext(email,result.token);
             navigate("/");
             toast.success("Login is success!");
         } else if (result && result.status === 400) {
