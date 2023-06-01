@@ -57,7 +57,7 @@ const EditUser = (props) => {
                     <Modal.Title>Edit User</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input type="text" name="id" value={user.id} onChange={(event) => handleOnchange(event)} />
+                    <input type="text" name="id" hidden value={user.id} onChange={(event) => handleOnchange(event)} />
                     <div className="row pt-1">
                         <div className="col-4">
                             <label htmlFor="name">Name:</label>

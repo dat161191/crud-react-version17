@@ -5,14 +5,12 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, useNavigate } from "react-router-dom";
 import logoApp from "../assets/img/logo192.png";
 import { toast } from 'react-toastify';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
 export const Header = (props) => {
     const navigate = useNavigate();
     const { logout, user } = useContext(UserContext);
-    const [token, setToken] = useState("");
-
     const handleLogout = () => {
         logout();
         navigate("/");
@@ -28,9 +26,7 @@ export const Header = (props) => {
                             <span> Test fresher reactjs</span>
                         </NavLink>
                     </Navbar.Brand>
-                    {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
                     <Navbar.Collapse id="basic-navbar-nav">
-                        {/* {(localStorage.getItem("token") || window.location.pathname === "/") && */}
                         {(localStorage.getItem("token") || window.location.pathname === "/") &&
                             < Nav className="me-auto">
                                 <Nav.Link  >
