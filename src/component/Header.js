@@ -40,7 +40,6 @@ export const Header = (props) => {
                                 </Nav.Link>
                             </Nav>
                         }
-                        
                         <Nav>
                             {localStorage.getItem("token") && <Nav.Link className='text-danger'>Welcome: {localStorage.getItem("email")}</Nav.Link>}
                             <NavDropdown title="Setting" id="basic-nav-dropdown">

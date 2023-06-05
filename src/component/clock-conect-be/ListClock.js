@@ -6,28 +6,30 @@ import { getListClockService } from "../../service/ClockService";
 const ListClock = (props) => {
     const [clocks, setClocks] = useState([]);
     const [size, setSize] = useState(4);
+
     useEffect(() => {
-        getListClock()
-    }, [])
+        getListClock();
+    }, [size])
     const getListClock = async () => {
-        // console.log("check size: ",size);
         let result = await getListClockService(size);
         // console.log('check call API BE: ', result.content);
         setClocks(result.content);
     }
     const showMore = () => {
+        // let sizeOld = size;
+        // let sizeNew = size + 4;
+        // console.log(sizeOld, sizeNew);
         setSize(size + 4);
-        // console.log("check size: ",size);
         getListClock();
     }
     const hideAway = () => {
         setSize(4);
-        // console.log("check size: ",size);
+        console.log("check size: ", size);
         getListClock();
     }
     return (
         <Container>
-            <h3 className="text-center text-danger">List Clock: connect React with JAva</h3>
+            <h3 className="text-center text-danger">List Clock: connect React with Java</h3>
             <div className="row py-2">
                 {clocks && clocks.length > 0 && clocks.map((ele, index) => {
                     return (

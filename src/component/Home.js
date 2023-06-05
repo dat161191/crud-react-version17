@@ -15,7 +15,7 @@ const Home = () => {
     },)
     return (
         <Container>
-            <h3 className="text-danger text-center">Đề tài ứng tuyển Fresher React</h3>
+            <h3 className="text-danger text-center">Đề tài ứng tuyển Intern/Fresher React</h3>
             <p><b>Yêu cầu:</b></p>
             <ul>
                 <li>Sử dụng API từ website http://reqres.in/ để tạo website</li>

@@ -59,7 +59,7 @@ const Login = () => {
                 <form className=" form">
                     <div className="title">Login</div>
                     {/* <div className="filed px-2">Email or username : eve.holt@reqres.in : cityslicka </div> */}
-                    <div className="filed px-2">Email or username : </div>
+                    <div className="filed px-2">Email or username : eve.holt@reqres.in ; cityslicka</div>
 
 
                     <div className="px-2">

@@ -44,7 +44,7 @@ export const ListUser = (props) => {
     
     const getListUser = async (page) => {
         let result = await getListUserService(page);
-        console.log('getListUser: ',result)
+        // console.log('getListUser: ',result)
         setUsers(result && result.data ? result.data : []);
         setPage(
             prePage => {
