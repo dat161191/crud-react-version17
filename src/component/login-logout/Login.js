@@ -32,7 +32,7 @@ const Login = () => {
             return;
         }
         setLoading(true);
-        let result = await loginUser(email, password);
+        let result = await loginUser(email.trim(), password.trim());
         // if (!result) {
         //     setLoading(true);
         // } else {
@@ -40,7 +40,7 @@ const Login = () => {
         // }
         // console.log("check login=>", result);
         if (result && result.token) {
-            loginContext(email,result.token);
+            loginContext(email, result.token);
             navigate("/");
             toast.success("Login is success!");
         } else if (result && result.status === 400) {
@@ -48,7 +48,15 @@ const Login = () => {
         }
         setLoading(false);
     }
-
+    const handleEnter = (event) => {
+        // if ((!email || !password) && event.keyCode === 13) {
+        //     toast.info("Please do not leave the input fields blank!");
+        // }
+        if (event && event.keyCode === 13) {
+            event.preventDefault();
+            handleLogin();
+        }
+    }
     return (
         <div
             style={{
@@ -65,7 +73,8 @@ const Login = () => {
                     <div className="px-2">
                         <input className="my-1" placeholder="Email or username"
                             // value={email} onChange={(event) => setEmail(event.target.value)} />
-                            value={email} onChange={(event) => handleChangeEmail(event)} />
+                            value={email} onChange={(event) => handleChangeEmail(event)}
+                            onKeyDown={(event) => handleEnter(event)} />
 
                     </div>
 
@@ -73,7 +82,8 @@ const Login = () => {
                         <input type={isShowPass === true ? "text" : "password"}
                             className="my-1" placeholder="password"
                             // value={password} onChange={(event) => setPassword(event.target.value)} />
-                            value={password} onChange={(event) => handleChangePassword(event)} />
+                            value={password} onChange={(event) => handleChangePassword(event)}
+                            onKeyDown={(event) => handleEnter(event)} />
                         <i className={isShowPass === true ? "bi bi-eye position-absolute" : "bi bi-eye-slash position-absolute"}
                             onClick={() => setIsShowPass(!isShowPass)}></i>
                     </div>

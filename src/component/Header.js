@@ -26,17 +26,30 @@ export const Header = (props) => {
                             <span> Test fresher reactjs</span>
                         </NavLink>
                     </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         {(localStorage.getItem("token") || window.location.pathname === "/") &&
                             < Nav className="me-auto">
                                 <Nav.Link  >
-                                    <NavLink style={{ textDecoration: 'none' }} exact="true" to="/" activeclassname="active">Home</NavLink>
+                                    <NavLink style={({ isActive }) => {
+                                        return {
+                                            textDecoration: "none", color: isActive ? "red" : "blue"
+                                        };
+                                    }} exact="true" to="/" >Home</NavLink>
                                 </Nav.Link>
                                 <Nav.Link >
-                                    <NavLink style={{ textDecoration: 'none' }} exact="true" to="/users" activeclassname="active">Manager Users</NavLink>
+                                    <NavLink style={({ isActive }) => {
+                                        return {
+                                            textDecoration: "none", color: isActive ? "red" : "blue"
+                                        };
+                                    }} exact="true" to="/users">Manager Users</NavLink>
                                 </Nav.Link>
                                 <Nav.Link >
-                                    <NavLink style={{ textDecoration: 'none' }} exact="true" to="/clocks" activeclassname="active">Manager Clock</NavLink>
+                                    <NavLink style={({ isActive }) => {
+                                        return {
+                                            textDecoration: "none", color: isActive ? "red" : "blue"
+                                        };
+                                    }} exact="true" to="/clocks" >Manager Clock</NavLink>
                                 </Nav.Link>
                             </Nav>
                         }
@@ -50,10 +63,18 @@ export const Header = (props) => {
                                     :
                                     <>
                                         <NavDropdown.Item >
-                                            <NavLink style={{ textDecoration: 'none' }} exact="true" to="/login" activeclassname="active">Login</NavLink>
+                                            <NavLink style={({ isActive }) => {
+                                                return {
+                                                    textDecoration: "none", color: isActive ? "red" : "blue"
+                                                };
+                                            }} exact="true" to="/login" >Login</NavLink>
                                         </NavDropdown.Item>
                                         <NavDropdown.Item >
-                                            <NavLink style={{ textDecoration: 'none' }} exact="true" to="/login" activeclassname="active">PersonPage</NavLink>
+                                            <NavLink style={({ isActive }) => {
+                                                return {
+                                                    textDecoration: "none", color: isActive ? "red" : "blue"
+                                                };
+                                            }} exact="true" to="/personPage" >PersonPage</NavLink>
                                         </NavDropdown.Item>
                                     </>
                                 }
@@ -62,6 +83,7 @@ export const Header = (props) => {
 
                     </Navbar.Collapse>
                 </Container>
+
             </Navbar >
         </>
     )

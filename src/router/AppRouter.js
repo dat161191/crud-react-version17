@@ -6,6 +6,7 @@ import { ListUser } from '../component/users-call-api/ListUser';
 import ListClock from '../component/clock-conect-be/ListClock';
 import ListUserRouter from "./ListUserRouter";
 import ListClockRoute from "./ListClockRoute";
+import NotFound from "./NotFound";
 const AppRouter = () => {
     return (
         <>
@@ -16,12 +17,15 @@ const AppRouter = () => {
                     <ListUserRouter>
                         <ListUser />
                     </ListUserRouter>
-                } />
+                }
+                />
                 <Route path="/clocks" element={
                     <ListClockRoute pathClocks='/clocks'>
                         <ListClock />
                     </ListClockRoute>
-                } />
+                }
+                />
+                <Route path="*" element={<NotFound />} />
             </Routes>
 
 
